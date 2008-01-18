@@ -1,0 +1,26 @@
+<todo version="0.1.19">
+    <title>
+        Last.fm badges
+    </title>
+    <note priority="veryhigh" time="1169636004" done="1182292103">
+        Proposer la TRANSPARENCE en vrai
+        <comment>
+            C'est fait :)
+        </comment>
+    </note>
+    <note priority="medium" time="1169635922" done="1174032572">
+        Proposer des couleurs
+    </note>
+    <note priority="medium" time="1169635992" done="1182292123">
+        Proposer un texte modifiable a volonte. En fait proposer un seul texte modifiable.... Mais faire ca une fois que j'aurai mieux maitrise le calcul et le positionnement dudit texte
+        <comment>
+            Je gère beaucoup mieux le positionnement du texte maintenant ;o)
+        </comment>
+    </note>
+    <note priority="high" time="1174667659" done="1185320316">
+        Corriger la gestion des username contenant des caracteres tels que '[' et ']'
+    </note>
+    <note priority="medium" time="1169635953">
+        Proposer des tailles differentes (mieux, proposer des TYPES de tailles : badge, signature)
+    </note>
+</todo>
