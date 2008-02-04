@@ -102,7 +102,7 @@ if ($feed->open($XmlStats))
 				break;
 
 			case "registered":
-			case "statsreset":
+			//case "statsreset":
 				$statsstart=$feed->getAttribute("unixtime");
 				$feed->read();
 				$feed->read();
