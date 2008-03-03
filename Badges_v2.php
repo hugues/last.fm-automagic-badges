@@ -40,7 +40,7 @@ header("Content-Type: image/png");
 if ( ! is_file($Stats)
 	||(filemtime($Stats) + CACHE < $_SERVER['REQUEST_TIME']))
 {
-	system("wget --no-cache http://ws.audioscrobbler.com/1.0/user/".rawurlencode($username)."/profile.xml -O $Stats.tmp");
+	system("wget -q --no-cache http://ws.audioscrobbler.com/1.0/user/".rawurlencode($username)."/profile.xml -O $Stats.tmp");
 	system("mv $Stats.tmp $Stats");
 }
 
