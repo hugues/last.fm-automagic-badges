@@ -42,6 +42,8 @@ if ( ! is_file($Stats)
 {
 	system("wget -q --no-cache http://ws.audioscrobbler.com/1.0/user/".rawurlencode($username)."/profile.xml -O $Stats.tmp");
 	system("mv $Stats.tmp $Stats");
+	if (!filesize($Stats))
+		system("rm $Stats");
 }
 
 if (   is_file($Cache)
