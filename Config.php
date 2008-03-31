@@ -6,7 +6,7 @@ define(WIDTH,     160);
 define(HEIGHT,     20);
 putenv("GDFONTPATH=/usr/share/fonts/truetype");
 
-define(CACHE_FOLDER, "/var/www/cache/Lastfm");
+define(CACHE_FOLDER, "/var/cache/www/Lastfm");
 
 $Styles = array ("Modern"   => "It_wasn_t_me",
 				 "Letters"  => "JackOLantern",
