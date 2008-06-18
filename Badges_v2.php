@@ -41,7 +41,9 @@ if ( ! is_file($Stats)
 	||(filemtime($Stats) + CACHE < $_SERVER['REQUEST_TIME']))
 {
 	system("wget -q --no-cache http://ws.audioscrobbler.com/1.0/user/".rawurlencode($username)."/profile.xml -O $Stats.tmp");
-	if (!filesize("$Stats.tmp"))
+	if (  !filesize("$Stats.tmp")
+		||(!strcmp(md5_file($Stats), md5_file("$Stats.tmp")))
+	   )
 		system("rm $Stats.tmp");
 	else
 		system("mv $Stats.tmp $Stats");
