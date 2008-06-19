@@ -7,9 +7,7 @@ $pathinfo=explode("/", $Pathinfo);
 $script=explode("/", $_SERVER['SCRIPT_NAME']);
 
 $username=$pathinfo[1];
-$type=$pathinfo[2];
-$style=$pathinfo[3];
-$color=$pathinfo[4];
+$hash=$pathinfo[2];
 
 include("Config.php");
 
@@ -84,6 +82,27 @@ class Text {
 		$this->size *= $ratio;
 	}
 }
+
+
+/*-----------------------------------------------------------
+
+  		Ok, now we are ready.
+
+	The idea of this version is to let the Last.fm user
+	decide exactly what she/he does wants the badge to show
+	up.
+	
+	I should offer the way to compute stats values, and get
+	their result into a string.
+
+	To get stats, we should limit to one user. So we get the
+	username first.
+	Then we propose to the user a bunch of results, such as,
+	for example,
+
+
+  -----------------------------------------------------------*/
+
 
 
 $Line1 = new Text;
