@@ -1,1 +1,1 @@
-Badges_v2.php
+DISCLAIMER.php
