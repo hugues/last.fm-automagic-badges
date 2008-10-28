@@ -122,10 +122,10 @@ if ($feed->open($XmlStats))
 if (! $playcount)
 {
 	$Lines[0]->value="Sorry, $username is not";
-	$Lines[0]->angle=2;
+	$Lines[0]->angle=rand(-1,2);
 	$Lines[] = new Text;
 	$Lines[1]->value="a valid Last.fm account";
-	$Lines[1]->angle=1;
+	$Lines[1]->angle=rand(-2,1);
 	define(HEIGHT, 50);
 	$Cache="";
 }
@@ -143,40 +143,46 @@ else
 	{
 		case "PerDay":
 			$Lines[0]->value = "$perday tracks per Day";
-			$Lines[0]->angle = 2;
+			$Lines[0]->angle = rand(0,5);
 			break;
 		case "PerWeek":
 			$Lines[0]->value = "$perweek tracks per Week";
-			$Lines[0]->angle = 2;
+			$Lines[0]->angle = rand(0,5);
 			break;
 		case "PerMonth":
 			$Lines[0]->value = "$permonth tracks per Month";
-			$Lines[0]->angle = 2;
+			$Lines[0]->angle = rand(0,5);
 			break;
 		case "PerDay2":
 			$Lines[] = new Text;
 			$Lines[0]->value = "$perday";
+			$Lines[0]->angle = rand(0,5);
 			$Lines[1]->value = "tracks per Day";
+			$Lines[1]->angle = rand(0,5);
 			break;
 		case "PerWeek2":
 			$Lines[] = new Text;
 			$Lines[0]->value = "$perweek";
+			$Lines[0]->angle = rand(0,5);
 			$Lines[1]->value = "tracks per Week";
+			$Lines[1]->angle = rand(0,5);
 			break;
 		case "PerMonth2":
 			$Lines[] = new Text;
 			$Lines[1]->value = "tracks per Month";
+			$Lines[0]->angle = rand(0,5);
 			$Lines[0]->value = "$permonth";
+			$Lines[1]->angle = rand(0,5);
 			break;
 		case "Trueness":
 			$Lines[0]->value = "is ";
 			$Lines[0]->value .= ($permonth > TRUENESS ? "an" : "a");
-			$Lines[0]->angle = 3;
+			$Lines[0]->angle = rand(0,5);
 			define(HEIGHT, 50);
 			$Lines[] = new Text;
 			$Lines[1]->value = ($permonth > TRUENESS ? "untrue" : "true");
 			$Lines[1]->value .= " listener";
-			$Lines[1]->angle = 2;
+			$Lines[1]->angle = rand(0,5);
 
 			if (strlen($username." ".$Lines[0]->value) >= strlen($Lines[1]->value))
 			{
@@ -193,34 +199,44 @@ else
 			$Lines[] = new Text;
 			$Lines[0]->value = "$UserName is ";
 			$Lines[0]->value .= ($permonth > TRUENESS ? "an" : "a" ) ;
+			$Lines[0]->angle = rand(0,5);
 			$Lines[1]->value = ($permonth > TRUENESS ? "Untrue" : "True");
+			$Lines[1]->angle = rand(0,5);
 			$Lines[2]->value = "listener";
+			$Lines[2]->angle = rand(0,5);
 			break;
 		case "Since":
 			$Lines[0]->value = strftime("since %B %Y", $statsstart);
-			$Lines[0]->angle = 1;
+			$Lines[0]->angle = rand(0,5);
 			break;
 		case "Since2":
 			$Lines[] = new Text;
 			$Lines[] = new Text;
 			$Lines[0]->value = "listening since";
+			$Lines[0]->angle = rand(0,5);
 			$Lines[1]->value = strftime("%B", $statsstart);
+			$Lines[1]->angle = rand(0,5);
 			$Lines[2]->value = strftime("%Y", $statsstart);
+			$Lines[2]->angle = rand(0,5);
 			break;
 		case "Total":
 			$Lines[0]->value = "$playcount tracks played";
-			$Lines[0]->angle = 1;
+			$Lines[0]->angle = rand(0,5);
 			define(HEIGHT, 40);
 			break;
 		case "Total2":
 			$Lines[0]->value = "$playcount";
+			$Lines[0]->angle = rand(0,5);
 			$Lines[] = new Text;
 			$Lines[1]->value = "tracks played";
+			$Lines[1]->angle = rand(0,5);
 			break;
 		default:
 			$Lines[0]->value = "Sorry !";
+			$Lines[0]->angle = rand(0,5);
 			$Lines[] = new Text;
 			$Lines[1]->value = "Not available anymore";
+			$Lines[1]->angle = rand(0,5);
 			define(HEIGHT, 50);
 			break;
 	}
