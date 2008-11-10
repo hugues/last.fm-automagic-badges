@@ -33,8 +33,8 @@ $color=$pathinfo[4];
 
 include("Config.php");
 
-mysql_connect("localhost", "lastfm");
-mysql_select_db("lastfm");
+mysql_connect(MYSQL_HOST, MYSQL_USER);
+mysql_select_db(MYSQL_DB);
 
 /*make cache data (array $data)*/
 $res = mysql_query("SELECT * FROM users WHERE username='" . gpc_addslashes(strtolower($username)) . "'");

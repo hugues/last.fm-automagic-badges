@@ -8,6 +8,8 @@ putenv("GDFONTPATH=/usr/share/fonts/truetype");
 
 define(CACHE_FOLDER, "/var/cache/www/Lastfm");
 
+include("Config.mysql");
+
 $Styles = array ("Modern"   => "It_wasn_t_me",
 				 "Letters"  => "JackOLantern",
 				 "Romantic" => "Shelley_Volante",
