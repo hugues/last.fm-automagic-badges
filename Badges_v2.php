@@ -278,9 +278,12 @@ function make_db_cache($username){
   		}
   	}
   	
-  	$QUERY=(sprintf("REPLACE INTO users (statsstart,playcount,lastupdate,username) VALUES ('%s',%s,'%s','%s');", 
-      time(), $data['playcount'], gpc_addslashes($data['statsstart']), gpc_addslashes(strtolower($username))));
-	mysql_query($QUERY);
+	if ($playcount != 0)
+	{
+		$QUERY=(sprintf("REPLACE INTO users (statsstart,playcount,lastupdate,username) VALUES ('%s',%s,'%s','%s');", 
+		  time(), $data['playcount'], gpc_addslashes($data['statsstart']), gpc_addslashes(strtolower($username))));
+		mysql_query($QUERY);
+	}
   }
 }
 
