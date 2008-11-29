@@ -294,7 +294,7 @@ function make_db_cache($username){
   		}
   	}
   	
-	if ($playcount != 0)
+	if ($data['playcount'] != 0)
 	{
 		$QUERY=(sprintf("REPLACE INTO users (statsstart,playcount,lastupdate,username) VALUES ('%s',%s,'%s','%s');", 
 		  time(), $data['playcount'], gpc_addslashes($data['statsstart']), gpc_addslashes(strtolower($username))));
