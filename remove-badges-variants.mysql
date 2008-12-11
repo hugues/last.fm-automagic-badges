@@ -10,7 +10,8 @@ USE lastfm
 
 DROP TABLE IF EXISTS tmp ;
 CREATE TEMPORARY TABLE tmp (SELECT username, type, COUNT(username) AS count FROM badges GROUP BY username, type ) ;
-SELECT badges.username, badges.type, badges.style, badges.color FROM badges, tmp WHERE badges.username = tmp.username AND badges.type = tmp.type AND tmp.count > 1 ;
+#SELECT badges.username, badges.type, badges.style, badges.color FROM badges, tmp WHERE badges.username = tmp.username AND badges.type = tmp.type AND tmp.count > 1 ;
+SELECT badges.png FROM badges, tmp WHERE badges.username = tmp.username AND badges.type = tmp.type AND tmp.count > 1 ;
 DELETE badges FROM badges, tmp WHERE badges.username = tmp.username AND badges.type = tmp.type AND tmp.count > 1 ;
 DROP TABLE tmp ;
 
