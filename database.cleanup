@@ -1,0 +1,16 @@
+
+USE lastfm
+
+
+/**
+ * Deletes all entries in badges
+ * for each unique username + type
+ * where more than one style or color exists
+ */
+
+DROP TABLE IF EXISTS tmp ;
+CREATE TEMPORARY TABLE tmp (SELECT username, type, COUNT(username) AS count FROM badges GROUP BY username, type ) ;
+DELETE badges FROM badges, tmp WHERE badges.username = tmp.username AND tmp.count > 1 ;
+DROP TABLE tmp ;
+
+
