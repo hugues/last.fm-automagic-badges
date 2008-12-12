@@ -11,22 +11,13 @@ USE lastfm
 DROP TABLE IF EXISTS tmp ;
 CREATE TEMPORARY TABLE tmp (SELECT username, type, COUNT(username) AS count FROM badges GROUP BY username, type ) ;
 
-SELECT badges.png
+SELECT badges.username, badges.type, badges.style, badges.color, badges.hits, tmp.count
 	FROM badges, tmp
 	WHERE badges.username = tmp.username
 	AND ( (badges.type = tmp.type AND tmp.count > 1)
 	   OR ( (badges.type LIKE concat(tmp.type,"%") OR tmp.type LIKE concat(badges.type,"%"))
 		 AND badges.type != tmp.type )
 	   ) ;
-
-DELETE badges.*
-	FROM badges, tmp
-	WHERE badges.username = tmp.username
-	AND ( (badges.type = tmp.type AND tmp.count > 1)
-	   OR ( (badges.type LIKE concat(tmp.type,"%") OR tmp.type LIKE concat(badges.type,"%"))
-		 AND badges.type != tmp.type )
-	   ) ;
-
 
 DROP TABLE tmp ;
 
