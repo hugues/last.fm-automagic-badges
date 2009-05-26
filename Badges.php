@@ -56,8 +56,6 @@ OR ($data["lastupdate"] AND $data["lastupdate"]+CACHE < time()))
 
 /*output image cache*/
 $Cache=CACHE_FOLDER."/Pictures/".strtolower(rawurlencode($username))."_$type-$style-$color.png";
-//if (strtolower($username)=="gugusse")
-	//$Cache="";
 
 clearstatcache();
 
@@ -92,7 +90,8 @@ else
 
 	if (  !is_file($Cache)
 	   OR (filemtime($Cache) < $data['lastupdate'])
-	   OR !filesize($Cache))
+	   OR !filesize($Cache)
+	   OR $username == "gugusse")
 	{
 
 		$duration =  $_SERVER['REQUEST_TIME'] - $statsstart;
