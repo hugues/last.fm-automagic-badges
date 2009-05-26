@@ -44,6 +44,7 @@ $Types = array(
 				"Total2"    => "Total tracks_ #2",
 		   		"PerDay"   => "Daily tracks_ #1",
 		   		"PerDay2"   => "Daily tracks_ #2",
+		   		"AlbumsPerDay"   => "Daily albums_ #1",
 				"PerWeek"  => "Weekly tracks_ #1",
 				"PerWeek2"  => "Weekly tracks_ #2",
 				"PerMonth" => "Monthly tracks_ #1",

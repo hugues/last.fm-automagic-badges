@@ -98,54 +98,70 @@ else
 		$months = $duration / (60*60*24*30);
 		$weeks  = $duration / (60*60*24*7);
 		$days   = $duration / (60*60*24);
-		$permonth  = floor($playcount / $months);
-		$perweek   = floor($playcount / $weeks);
-		$perday    = floor($playcount / $days);
 
+		$TPM = floor($playcount / $months); // TRACKS PER MONTH
+		$TPW = floor($playcount / $weeks);  // TRACKS PER WEEK
+		$TPD = floor($playcount / $days);   // TRACKS PER DAY
+		define(ALBUM_TRACKS, 13);
+		$APD = floor($TPD / ALBUM_TRACKS); // ALBUMS PER DAY
+		$APM = floor($TPM / ALBUM_TRACKS); // ALBUMS PER MONTH
+		$APW = floor($TPW / ALBUM_TRACKS); // ALBUMS PER WEEK
+
+		// %N number
+		// %T track/album
+		// %D day/week/month
+		$FORMAT="%N %T per %D";
+		// %
+
+		define(ANGLE,rand(2,13));
 		switch($type)
 		{
 			case "PerDay":
-				$Lines[0]->value = "$perday tracks per Day";
-				$Lines[0]->angle = rand(2,13);
+				$Lines[0]->value = "$TPD track" . ($TPD==1 ? "" : "s") . " per Day";
+				$Lines[0]->angle = ANGLE;
+				break;
+			case "AlbumsPerDay":
+				$Lines[0]->value = "" . floor($TPD / 13) . " album" . (floor($TPD/13)==1 ? "" : "s") . " per Day";
+				$Lines[0]->angle = ANGLE;
 				break;
 			case "PerWeek":
-				$Lines[0]->value = "$perweek tracks per Week";
-				$Lines[0]->angle = rand(2,13);
+				$Lines[0]->value = "$TPW track" . ($TPW==1 ? "" : "s") . " per Week";
+				$Lines[0]->angle = ANGLE;
 				break;
 			case "PerMonth":
-				$Lines[0]->value = "$permonth tracks per Month";
-				$Lines[0]->angle = rand(2,13);
+				$Lines[0]->value = "$TPM track" . ($TPM==1 ? "" : "s") . " per Month";
+				$Lines[0]->angle = ANGLE;
 				break;
 			case "PerDay2":
+				$Lines[0]->value = "$TPD";
+				$Lines[0]->angle = ANGLE;
 				$Lines[] = new Text;
-				$Lines[0]->value = "$perday";
-				$Lines[0]->angle = rand(2,13);
-				$Lines[1]->value = "tracks per Day";
-				$Lines[1]->angle = rand(2,13);
+				$Lines[1]->value = "track" . ($TPD==1 ? "" : "s") . " per Day";
+				$Lines[1]->angle = ANGLE;
 				break;
 			case "PerWeek2":
+				$Lines[0]->value = "$TPW";
+				$Lines[0]->angle = ANGLE;
 				$Lines[] = new Text;
-				$Lines[0]->value = "$perweek";
-				$Lines[0]->angle = rand(2,13);
-				$Lines[1]->value = "tracks per Week";
-				$Lines[1]->angle = rand(2,13);
+				$Lines[1]->value = "track" . ($TPW==1 ? "" : "s") . " per Week";
+				$Lines[1]->angle = ANGLE;
 				break;
 			case "PerMonth2":
+				$Lines[0]->value = "$TPM";
+				$Lines[0]->angle = ANGLE;
 				$Lines[] = new Text;
-				$Lines[1]->value = "tracks per Month";
-				$Lines[0]->angle = rand(2,13);
-				$Lines[0]->value = "$permonth";
-				$Lines[1]->angle = rand(2,13);
+				$Lines[1]->value = "track" . ($TPM==1 ? "" : "s") . " per Month";
+				$Lines[1]->angle = ANGLE;
 				break;
 			case "Trueness":
 				$Lines[0]->value = "is ";
-				$Lines[0]->value .= ($permonth > TRUENESS ? "an" : "a");
-				$Lines[0]->angle = rand(2,13);
+				$Lines[0]->value .= ($TPM > TRUENESS ? "an" : "a");
+				$Lines[0]->angle = ANGLE;
 				define(HEIGHT, 50);
 				$Lines[] = new Text;
-				$Lines[1]->value = ($permonth > TRUENESS ? "untrue" : "true");
+				$Lines[1]->value = ($TPM > TRUENESS ? "untrue" : "true");
 				$Lines[1]->value .= " listener";
-				$Lines[1]->angle = rand(2,13);
+				$Lines[1]->angle = ANGLE;
 
 				if (strlen($username." ".$Lines[0]->value) >= strlen($Lines[1]->value))
 				{
@@ -158,48 +174,48 @@ else
 				}
 				break;
 			case "Trueness2":
-				$Lines[] = new Text;
-				$Lines[] = new Text;
 				$Lines[0]->value = "$username is ";
-				$Lines[0]->value .= ($permonth > TRUENESS ? "an" : "a" ) ;
-				$Lines[0]->angle = rand(2,13);
-				$Lines[1]->value = ($permonth > TRUENESS ? "Untrue" : "True");
-				$Lines[1]->angle = rand(2,13);
+				$Lines[0]->value .= ($TPM > TRUENESS ? "an" : "a" ) ;
+				$Lines[0]->angle = ANGLE;
+				$Lines[] = new Text;
+				$Lines[1]->value = ($TPM > TRUENESS ? "Untrue" : "True");
+				$Lines[1]->angle = ANGLE;
+				$Lines[] = new Text;
 				$Lines[2]->value = "listener";
-				$Lines[2]->angle = rand(2,13);
+				$Lines[2]->angle = ANGLE;
 				break;
 			case "Since":
 				$Lines[0]->value = strftime("since %B %Y", $statsstart);
-				$Lines[0]->angle = rand(2,13);
+				$Lines[0]->angle = ANGLE;
 				break;
 			case "Since2":
-				$Lines[] = new Text;
-				$Lines[] = new Text;
 				$Lines[0]->value = "listening since";
-				$Lines[0]->angle = rand(2,13);
+				$Lines[0]->angle = ANGLE;
+				$Lines[] = new Text;
 				$Lines[1]->value = strftime("%B", $statsstart);
-				$Lines[1]->angle = rand(2,13);
+				$Lines[1]->angle = ANGLE;
+				$Lines[] = new Text;
 				$Lines[2]->value = strftime("%Y", $statsstart);
-				$Lines[2]->angle = rand(2,13);
+				$Lines[2]->angle = ANGLE;
 				break;
 			case "Total":
-				$Lines[0]->value = "$playcount tracks played";
-				$Lines[0]->angle = rand(2,13);
+				$Lines[0]->value = "$playcount track" . ($playcount==1 ? "" : "s") . " played";
+				$Lines[0]->angle = ANGLE;
 				define(HEIGHT, 40);
 				break;
 			case "Total2":
 				$Lines[0]->value = "$playcount";
-				$Lines[0]->angle = rand(2,13);
+				$Lines[0]->angle = ANGLE;
 				$Lines[] = new Text;
-				$Lines[1]->value = "tracks played";
-				$Lines[1]->angle = rand(2,13);
+				$Lines[1]->value = "track" . ($playcount==1 ? "" : "s") . " played";
+				$Lines[1]->angle = ANGLE;
 				break;
 			default:
 				$Lines[0]->value = "Sorry !";
-				$Lines[0]->angle = rand(2,13);
+				$Lines[0]->angle = ANGLE;
 				$Lines[] = new Text;
 				$Lines[1]->value = "Not available";
-				$Lines[1]->angle = rand(2,13);
+				$Lines[1]->angle = ANGLE;
 				define(HEIGHT, 50);
 				break;
 		}
