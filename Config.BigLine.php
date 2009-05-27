@@ -2,7 +2,7 @@
 
 define(TRUENESS, 4000);
 define(CACHE,    (3600*48));
-define(WIDTH,     300);
+define(WIDTH,     200);
 define(HEIGHT,     50);
 putenv("GDFONTPATH=/usr/share/fonts/truetype");
 
