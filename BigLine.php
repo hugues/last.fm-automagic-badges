@@ -41,7 +41,9 @@ $type=$pathinfo[2];
 $style=$pathinfo[3];
 $color=$pathinfo[4];
 
-include("Config.php");
+
+include("Config.BigLine.php");
+
 
 mysql_connect(MYSQL_HOST, MYSQL_USER);
 mysql_select_db(MYSQL_DB);
@@ -99,45 +101,70 @@ else
 		$weeks  = $duration / (60*60*24*7);
 		$days   = $duration / (60*60*24);
 
-		$TPM = floor($playcount / $months); // TRACKS PER MONTH
-		$TPW = floor($playcount / $weeks);  // TRACKS PER WEEK
-		$TPD = floor($playcount / $days);   // TRACKS PER DAY
-		define(ALBUM_TRACKS, 13);
-		$APD = floor($TPD / ALBUM_TRACKS); // ALBUMS PER DAY
-		$APM = floor($TPM / ALBUM_TRACKS); // ALBUMS PER MONTH
-		$APW = floor($TPW / ALBUM_TRACKS); // ALBUMS PER WEEK
+		$TracksPerDay = floor($playcount / $days);
+		$TracksPerWeek = floor($playcount / $weeks);
+		$TracksPerMonth = floor($playcount / $months);
+		define(TRACKS_PER_ALBUM, 13);
+		$AlbumsPerDay = floor($TracksPerDay / TRACKS_PER_ALBUM);
+		$AlbumsPerWeek = floor($TracksPerWeek / TRACKS_PER_ALBUM);
+		$AlbumsPerMonth = floor($TracksPerMonth / TRACKS_PER_ALBUM);
 
-		// %user			<username>
-		// %number			<number>
-		// %albumtrack		«track»/«album»
-		// %dayweekmonth	«day»/«week»/«month»
-		// %trueness		«a true»/«an untrue»
-		// %since			<month + year>
-		$formats = array("DEFAULT"	=> "%number %albumtrack per %dayweekmonth",
-						 "Total"	=> "%number %albumtrack played",
-						 "Trueness"	=> "%user is $trueness listener",
-						 "Since"	=> "listening since %since",
-						 "FAILBACK"	=> "Sorry, this $type is unavailable");
+		$formats = array("DEFAULT"	=> "\$number \$albumtrack per \$dayweekmonth",
+						 "Total"	=> "\$number \$albumtrack played",
+						 "Trueness"	=> "\$username is \$trueness listener",
+						 "Since"	=> "Since \$since",
+						 "FAILBACK"	=> "Sorry, '\$type' is unavailable.");
 
 		switch($type)
 		{
-			case "(Tracks|Albums)Per(Day|Week|Month)":
-				$TEXT="DEFAULT";
+			case "AlbumsPerDay":
+			case "AlbumsPerWeek":
+			case "AlbumsPerMonth":
+			case "TracksPerDay":
+			case "TracksPerWeek":
+			case "TracksPerMonth":
+				$format="DEFAULT";
+				ereg("^(Albums|Tracks)Per(Day|Week|Month)$",$type,$match);
+				$albumtrack=$match[1];
+				$dayweekmonth=$match[2];
+				eval("\$number=\$".$albumtrack."Per".$dayweekmonth.";");
 				break;
 			case "Trueness":
+				$format=$type;
+				$trueness = ($TracksPerMonth < TRUENESS ? "a true" : "an untrue");
+				break;
 			case "Since":
-			case "Total":
-				$TEXT=$type;
+				$format=$type;
+				$since=strftime("%B %Y", $statsstart);
+				break;
+			case "TotalTracks":
+			case "TotalAlbums":
+				$format="Total";
+				ereg("^Total(Tracks|Albums)$",$type,$match);
+				$albumtrack=$match[1];
+				switch ($albumtrack)
+				{
+					case "Tracks":
+						$number=$playcount;
+						break;
+					case "Albums":
+						$number = floor($number / ALBUM_TRACKS);
+						break;
+				}
 				break;
 			default:
-				$TEXT="FAILBACK";
+				$format="FAILBACK";
 				break;
 		}
 
-		define(ANGLE,rand(2,13));
+		define(ANGLE,1);
 
+		eval("\$Lines[0]->value=\"$formats[$format]\";");
 		foreach ($Lines as $Line)
+		{
 			$Line->font = "import/" . $Styles[$style];	
+			$Line->angle=ANGLE;
+		}
 
 		$y=0;
 		foreach ($Lines as $Line)
@@ -174,7 +201,7 @@ else
 		imagepng($img, $Cache);
 		imagedestroy($img);
 
-		$QUERY=sprintf("REPLACE INTO badges (username, type, style, color, lastupdate, png) VALUES ('%s','%s','%s','%s', %s, '%s');", 
+		$QUERY=sprintf("REPLACE INTO badges (username, type, style, color, lastupdate, png) VALUES ('\$s','\$s','\$s','\$s', \$s, '\$s');", 
 			  $username,
 			  $type,
 			  $style,
@@ -227,7 +254,7 @@ function make_db_cache($username){
   	
 	if ($data['playcount'] != 0)
 	{
-		$QUERY=(sprintf("REPLACE INTO users (statsstart,playcount,lastupdate,username) VALUES ('%s',%s,'%s','%s');", 
+		$QUERY=(sprintf("REPLACE INTO users (statsstart,playcount,lastupdate,username) VALUES ('\$s',\$s,'\$s','\$s');", 
 		  time(), $data['playcount'], gpc_addslashes($data['statsstart']), gpc_addslashes(strtolower($username))));
 		mysql_query($QUERY);
 	}
@@ -243,7 +270,7 @@ function touch_badge($username, $type, $style, $color)
 		$hits = $data["hits"];
 	$hits++;
 
-	$QUERY=sprintf("UPDATE badges SET hits=%s, lasthit='%s' WHERE username='%s' AND type='$type' AND style='$style' AND color='$color';", 
+	$QUERY=sprintf("UPDATE badges SET hits=\$s, lasthit='\$s' WHERE username='\$s' AND type='$type' AND style='$style' AND color='$color';", 
 		$hits, time(), gpc_addslashes(strtolower($username)));
 	//echo $QUERY;
 	mysql_query($QUERY);
