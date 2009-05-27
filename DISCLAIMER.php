@@ -47,14 +47,14 @@ class Text {
 $Lines = array();
 $Lines[] = new Text;
 
-$Lines[0]->value = "Sorry";
+$Lines[0]->value = "New stuff available !";
 $Lines[0]->angle = 2;
 $Lines[] = new Text;
-$Lines[1]->value = "due to too heavy load";
+$Lines[1]->value = "Go get the latest badge";
 $Lines[] = new Text;
-$Lines[2]->value = "badges will be suspended";
+$Lines[2]->value = "into my website";
 $Lines[] = new Text;
-$Lines[3]->value = "for some time...";
+$Lines[3]->value = "from NOW !";
 
 foreach ($Lines as $Line)
 	$Line->font = "import/Georgia";	
