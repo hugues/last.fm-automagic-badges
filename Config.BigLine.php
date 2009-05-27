@@ -40,14 +40,14 @@ $Colors = array(
 			);
 
 $Types = array(
-				"TotalTracks" 	  => "Total tracks_",
-				"TotalAlbums"    => "Total albums_",
 		   		"TracksPerDay"   => "Daily tracks_",
 		   		"TracksPerWeek"   => "Weekly tracks_",
 		   		"TracksPerMonth"   => "Monthly tracks_",
+				"TotalTracks" 	  => "Total tracks_",
 		   		"AlbumsPerDay"   => "Daily albums_",
 		   		"AlbumsPerWeek"   => "Weekly albums_",
 		   		"AlbumsPerMonth"   => "Monthly albums_",
+				"TotalAlbums"    => "Total albums_",
 				"Since"    => "Since",
 		   		"Trueness" => "Trueness",
 				);

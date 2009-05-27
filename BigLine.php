@@ -124,10 +124,11 @@ else
 			case "TracksPerWeek":
 			case "TracksPerMonth":
 				$format="DEFAULT";
-				ereg("^(Albums|Tracks)Per(Day|Week|Month)$",$type,$match);
+				ereg("^(Album|Track)sPer(Day|Week|Month)$",$type,$match);
 				$albumtrack=$match[1];
 				$dayweekmonth=$match[2];
-				eval("\$number=\$".$albumtrack."Per".$dayweekmonth.";");
+				eval("\$number=\$".$albumtrack."sPer".$dayweekmonth.";");
+				$albumtrack .= ($number != 1 ? 's' : '');
 				break;
 			case "Trueness":
 				$format=$type;
@@ -140,15 +141,17 @@ else
 			case "TotalTracks":
 			case "TotalAlbums":
 				$format="Total";
-				ereg("^Total(Tracks|Albums)$",$type,$match);
+				ereg("^Total(Track|Album)s$",$type,$match);
 				$albumtrack=$match[1];
-				switch ($albumtrack)
+				switch ($albumtrack.'s')
 				{
 					case "Tracks":
 						$number=$playcount;
+						$albumtrack.=($number != 1 ? 's' : '');
 						break;
 					case "Albums":
-						$number = floor($number / ALBUM_TRACKS);
+						$number = floor($playcount / TRACKS_PER_ALBUM);
+						$albumtrack.=($number != 1 ? 's' : '');
 						break;
 				}
 				break;
@@ -158,22 +161,21 @@ else
 		}
 
 		define(ANGLE,1);
+		$y=0;
 
-		eval("\$Lines[0]->value=\"$formats[$format]\";");
+		$username=ucfirst($username);
 		foreach ($Lines as $Line)
 		{
+			eval("\$Line->value=\"$formats[$format]\";");
 			$Line->font = "import/" . $Styles[$style];	
 			$Line->angle=ANGLE;
-		}
 
-		$y=0;
-		foreach ($Lines as $Line)
-		{
 			$size=imageftbbox($Line->size, $Line->angle, $Line->font, $Line->value);
 			$Line->initiate($size);
 			$y+=$Line->height;
 			$Line->y=$y;
 		}
+		$username=strtolower($username);
 
 		$Image = new Text;
 		$Image->width   = WIDTH;
@@ -303,7 +305,7 @@ class Text {
 	var $y = 0;
 
 	var $font = "";
-	var $size = 150; // High values to better quality
+	var $size = 300; // High values to better quality
 	var $angle = 0;
 	var $color = 0;
 	var $value = "";
@@ -311,11 +313,11 @@ class Text {
 	function initiate($size) {
 		$this->width = abs(
 			max($size[0], $size[2], $size[4], $size[6])
-		  - min(0, $size[0], $size[2], $size[4], $size[6])
+		  - min($size[0], $size[2], $size[4], $size[6])
 		  );
 		$this->height= abs(
 		    max($size[1], $size[3], $size[5], $size[7])
-		  - min(0, $size[1], $size[3], $size[5], $size[7])
+		  - min($size[1], $size[3], $size[5], $size[7])
 		  );
 
 		$ratio = WIDTH / $this->width;
