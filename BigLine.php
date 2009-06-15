@@ -92,8 +92,7 @@ else
 
 	if (  !is_file($Cache)
 	   OR (filemtime($Cache) < $data['lastupdate'])
-	   OR !filesize($Cache)
-	   OR $username == "gugusse")
+	   OR !filesize($Cache))
 	{
 
 		$duration =  $_SERVER['REQUEST_TIME'] - $statsstart;
@@ -203,7 +202,7 @@ else
 		imagepng($img, $Cache);
 		imagedestroy($img);
 
-		$QUERY=sprintf("REPLACE INTO badges (username, type, style, color, lastupdate, png) VALUES ('\$s','\$s','\$s','\$s', \$s, '\$s');", 
+		$QUERY=sprintf("REPLACE INTO badges (username, type, style, color, lastupdate, png) VALUES ('%s','%s','%s','%s', %s, '%s');", 
 			  $username,
 			  $type,
 			  $style,
@@ -256,7 +255,7 @@ function make_db_cache($username){
   	
 	if ($data['playcount'] != 0)
 	{
-		$QUERY=(sprintf("REPLACE INTO users (statsstart,playcount,lastupdate,username) VALUES ('\$s',\$s,'\$s','\$s');", 
+		$QUERY=(sprintf("REPLACE INTO users (statsstart,playcount,lastupdate,username) VALUES ('%s',%s,'%s','%s');",
 		  time(), $data['playcount'], gpc_addslashes($data['statsstart']), gpc_addslashes(strtolower($username))));
 		mysql_query($QUERY);
 	}
@@ -272,7 +271,7 @@ function touch_badge($username, $type, $style, $color)
 		$hits = $data["hits"];
 	$hits++;
 
-	$QUERY=sprintf("UPDATE badges SET hits=\$s, lasthit='\$s' WHERE username='\$s' AND type='$type' AND style='$style' AND color='$color';", 
+	$QUERY=sprintf("UPDATE badges SET hits=%s, lasthit='%s' WHERE username='%s' AND type='$type' AND style='$style' AND color='$color';", 
 		$hits, time(), gpc_addslashes(strtolower($username)));
 	//echo $QUERY;
 	mysql_query($QUERY);
