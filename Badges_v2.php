@@ -6,10 +6,10 @@ $Pathinfo=$_SERVER['PATH_INFO'];
 $pathinfo=explode("/", $Pathinfo);
 $script=explode("/", $_SERVER['SCRIPT_NAME']);
 
-$username=$pathinfo[1];
-$type=$pathinfo[2];
-$style=$pathinfo[3];
-$color=$pathinfo[4];
+$username=$pathinfo[0];
+$type=$pathinfo[1];
+$style=$pathinfo[2];
+$color=$pathinfo[3];
 
 include("Config.php");
 
