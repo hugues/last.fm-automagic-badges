@@ -1,0 +1,14 @@
+USE lastfm
+
+CREATE TEMPORARY TABLE users_having_a_badge (SELECT username, 0 AS has_a_badge FROM users) ;
+CREATE TEMPORARY TABLE badges_having_a_user (SELECT username, 0 AS has_a_user FROM badges) ;
+
+UPDATE users_having_a_badge, badges SET has_a_badge = 1 WHERE users_having_a_badge.username = badges.username ;
+UPDATE badges_having_a_user, users SET has_a_user = 1 WHERE badges_having_a_user.username = users.username ;
+
+DELETE users.* FROM users, users_having_a_badge where has_a_badge = 0 AND users.username = users_having_a_badge.username ;
+SELECT badges.png FROM badges, badges_having_a_user where has_a_user = 0 AND badges.username = badges_having_a_user.username ;
+DELETE badges.* FROM badges, badges_having_a_user where has_a_user = 0 AND badges.username = badges_having_a_user.username ;
+
+DROP TABLE users_having_a_badge;
+DROP TABLE badges_having_a_user;
