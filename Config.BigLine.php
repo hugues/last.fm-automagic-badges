@@ -10,23 +10,42 @@ define(CACHE_FOLDER, "/var/cache/www/Lastfm");
 
 include("Config.mysql");
 
-$Styles = array ("Modern"   => "It_wasn_t_me",
-				 "Letters"  => "JackOLantern",
-				 "Romantic" => "Shelley_Volante",
-				 "Elegant"  => "ITCEdScr",
-				 "Screamy"  => "Junkyard",
-				 "Girlie"   => "girlw___",
-				 "Funny"    => "PenguinAttack",
-				 "Curly"    => "Curlz___",
-				 "Ruritania"=> "Ruritania",
-		 		 "Simple"   => "Georgia",
-				 "Morpheus" => "Morpheus",
-				 "Flamy"	=> "Baileysc",
-				 "FaceLift" => "facerg__",
-				 "TypeO"    => "typeo___",
-				 "Grindy"   => "Jack_the_Hipper",
-				 "Horrorful"=> "horrh___"
-				 );
+$Styles = array (
+			"Astonished" => "Astonish",
+			"Broken" => "Broken15",
+			"Curly"    => "Curlz___",
+			"DirtyEgo" => "Dirtyego",
+			"DisgustingBehaviour" => "Disgb___",
+			"DownCome" => "Downcome",
+			"FaceLift" => "facerg__",
+			"Flamy"	=> "Baileysc",
+			"Funny"    => "PenguinAttack",
+			"Girlie"   => "girlw___",
+			"Grindy"   => "Jack_the_Hipper",
+			"Guilty" => "Guilty__",
+			"Hooper"=> "Hooper_D",
+			"Horrorful"=> "horrh___",
+			"HorsePuke" => "Horsp___",
+			"Letters"  => "JackOLantern",
+			"MaxRhodes" => "Maxrhode",
+			"MemoryLapses" => "Memol___",
+			"MisProject" => "Misproje",
+			"Modern"   => "It_wasn_t_me",
+			"Morpheus" => "Morpheus",
+			"Nails" => "Nails___",
+			"Nasty" => "Nasty___",
+			"Pastelaria" => "Pastelar",
+			"Porcelain" => "Porcelai",
+			"PrintError" => "Prine___",
+			"Rochester" => "Rocheste",
+			"Romantic" => "Shelley_Volante",
+			"Ruritania"=> "Ruritania",
+			"Screamy"  => "Junkyard",
+			"Selfish" => "Selfish_",
+			"Shortcut" => "Shortcut",
+			"Simple"   => "Georgia",
+			"TypeO"    => "typeo___"
+			);
 
 $Colors = array(
 				"Black"  => 0x000000,
@@ -56,7 +75,7 @@ $Description = array("Trueness" => "<a href=\"http://www.last.fm/group/true+list
 
 // DEFAULT VALUES //
 if ($user == "")                        $user="gugusse";
-if (!array_key_exists($style, $Styles)) $style="TypeO";
+if (!array_key_exists($style, $Styles)) $style="Astonished";
 if (!array_key_exists($color, $Colors)) $color="Black";
 //if (!array_key_exists($type,  $Types))  { $type="UNAVAILABLE" ; $color="Black" ; $username="gugusse" ; }
 
