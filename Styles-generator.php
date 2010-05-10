@@ -1,8 +1,8 @@
 <?
 
-include("Config.php");
+include("Config.BigLine.php");
 
-define(WIDTH, 150);
+define(WIDTH, 100);
 define(HEIGHT, 50);
 
 foreach ($Styles as $style => $font)
@@ -15,10 +15,8 @@ foreach ($Styles as $style => $font)
 	$black=imagecolorallocatealpha($img, 0, 0, 0, 0);
 
 	imagefilledrectangle($img, 0, 0, WIDTH, HEIGHT, $transparent);
-
-	imagettftext($img, 15, 0, 0, HEIGHT * 80/100 , $black, "import/".$font, $style);
-
-	imagepng($img, "./$style.png");
+	imagettftext($img, 30, 3, 0, HEIGHT * 80/100 , $black, "import/".$font, $style);
+	imagepng($img, "styles/$style.png");
 }
 
 ?>
