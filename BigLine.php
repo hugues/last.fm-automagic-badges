@@ -123,7 +123,7 @@ else
 			case "TracksPerWeek":
 			case "TracksPerMonth":
 				$format="DEFAULT";
-				ereg("^(Album|Track)sPer(Day|Week|Month)$",$type,$match);
+				preg_match("/^(Album|Track)sPer(Day|Week|Month)$/",$type,$match);
 				$albumtrack=$match[1];
 				$dayweekmonth=$match[2];
 				eval("\$number=\$".$albumtrack."sPer".$dayweekmonth.";");
@@ -140,7 +140,7 @@ else
 			case "TotalTracks":
 			case "TotalAlbums":
 				$format="Total";
-				ereg("^Total(Track|Album)s$",$type,$match);
+				preg_match("/^Total(Track|Album)s$/",$type,$match);
 				$albumtrack=$match[1];
 				switch ($albumtrack.'s')
 				{
@@ -166,7 +166,7 @@ else
 		foreach ($Lines as $Line)
 		{
 			eval("\$Line->value=\"$formats[$format]\";");
-			$Line->font = "import/" . $Styles[$style];	
+			$Line->font = "import/" . $Styles[$style];
 			$Line->angle=ANGLE;
 
 			$size=imageftbbox($Line->size, $Line->angle, $Line->font, $Line->value);
