@@ -17,6 +17,7 @@ $Styles = array (
 			"Curly"    => "Curlz___",
 			"DirtyEgo" => "Dirtyego",
 			"DisgustingBehaviour" => "Disgb___",
+			"DayOfTheTentacle" => "dott",
 			"DownCome" => "Downcome",
 			"FaceLift" => "facerg__",
 			"Flamy"	=> "Baileysc",
