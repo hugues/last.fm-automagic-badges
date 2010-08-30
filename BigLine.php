@@ -166,7 +166,7 @@ else
 		foreach ($Lines as $Line)
 		{
 			eval("\$Line->value=\"$formats[$format]\";");
-			$Line->font = "import/" . $Styles[$style];
+			$Line->font = "" . $Styles[$style];
 			$Line->angle=ANGLE;
 
 			$size=imageftbbox($Line->size, $Line->angle, $Line->font, $Line->value);

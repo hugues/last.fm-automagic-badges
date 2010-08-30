@@ -15,7 +15,7 @@ foreach ($Styles as $style => $font)
 	$black=imagecolorallocatealpha($img, 0, 0, 0, 0);
 
 	imagefilledrectangle($img, 0, 0, WIDTH, HEIGHT, $transparent);
-	imagettftext($img, 30, 3, 0, HEIGHT * 80/100 , $black, "import/".$font, $style);
+	imagettftext($img, 30, 3, 0, HEIGHT * 80/100 , $black, "".$font, $style);
 	imagepng($img, "styles/$style.png");
 }
 

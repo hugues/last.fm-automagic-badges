@@ -4,7 +4,8 @@ define(TRUENESS, 4000);
 define(CACHE,    (3600*48));
 define(WIDTH,     200);
 define(HEIGHT,     50);
-putenv("GDFONTPATH=/usr/share/fonts/truetype");
+#putenv("GDFONTPATH=/usr/share/fonts/truetype");
+putenv("GDFONTPATH=/home/hugues/www/Last.fm/TrueType");
 
 define(CACHE_FOLDER, "/var/cache/www/Lastfm");
 
