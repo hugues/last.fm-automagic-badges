@@ -82,7 +82,6 @@ if (! $playcount)
 	$Lines[] = new Text;
 	$Lines[1]->value="a valid Last.fm account";
 	$Lines[1]->angle=rand(-2,1);
-	define(HEIGHT, 50);
 	$Cache="";
 }
 else
@@ -92,7 +91,8 @@ else
 
 	if (  !is_file($Cache)
 	   OR (filemtime($Cache) < $data['lastupdate'])
-	   OR !filesize($Cache))
+	   OR !filesize($Cache)
+	   OR $username == "gugusse")
 	{
 
 		$duration =  $_SERVER['REQUEST_TIME'] - $statsstart;
@@ -159,7 +159,7 @@ else
 				break;
 		}
 
-		define(ANGLE,1);
+		define(ANGLE,2);
 		$y=0;
 
 		$username=ucfirst($username);
@@ -171,13 +171,14 @@ else
 
 			$size=imageftbbox($Line->size, $Line->angle, $Line->font, $Line->value);
 			$Line->initiate($size);
-			$y+=$Line->height;
-			$Line->y=$y;
+			$y+=$Line->height + 20;
+			$Line->y = $y - 15;
+			$Line->x += 10;
 		}
 		$username=strtolower($username);
 
 		$Image = new Text;
-		$Image->width   = WIDTH;
+		$Image->width   = WIDTH + 20;
 		$Image->height  = $y;
 
 		$img=imagecreatetruecolor($Image->width, $Image->height);
@@ -190,13 +191,15 @@ else
 												  GetColor("g", $Colors[$color]),
 												  Getcolor("b", $Colors[$color]));
 		}
-
 		$transparent=imagecolorallocatealpha($img, 255, 255, 255, 127);
 
 		imagefilledrectangle($img, 0, 0, $Image->width, $Image->height, $transparent);
 
 		foreach ($Lines as $Line)
+		{
+			//if ($username == "gugusse") imagerectangle($img, 0, 0, $Image->width - 1, $Image->height - 1, $Line->color);
 			imagettftext($img, $Line->size, $Line->angle, $Line->x, $Line->y, $Line->color, $Line->font, $Line->value);
+		}
 
 
 		imagepng($img, $Cache);
