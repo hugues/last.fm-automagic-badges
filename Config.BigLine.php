@@ -73,8 +73,6 @@ $Types = array(
 		   		"Trueness" => "Trueness",
 				);
 
-$Description = array("Trueness" => "<a href=\"http://www.last.fm/group/true+listener\">What's the heck is this </a> ?");
-
 // DEFAULT VALUES //
 if ($user == "")                        $user="gugusse";
 if (!array_key_exists($style, $Styles)) $style="Astonished";
