@@ -59,11 +59,19 @@ OR ($data["lastupdate"] AND $data["lastupdate"]+CACHE < time()))
 /*output image cache*/
 $Cache=CACHE_FOLDER."/Pictures/".strtolower(rawurlencode($username))."_$type-$style-$color.png";
 
-clearstatcache();
+//clearstatcache();
 
-//if (is_file($Cache) AND (filemtime($Cache) >= $data['lastupdate'])){
-  //header("Location: ".$Cache); //its faster, but you should set CACHE_FOLDER = "."
-//}
+/*
+if (is_file($Cache) AND (filemtime($Cache) >= $data['lastupdate'])){
+  header("Location: /~hugues/Last.fm/".$Cache); //its faster, but you should set CACHE_FOLDER = "."
+  exit;
+}
+*/
+
+if (is_file($Cache))
+{
+	SendCacheHeaders(filemtime($Cache), CACHE);
+}
 
 /*-----------------------------------------------------------
   		Ok, now we are ready to create the image with GD.
@@ -92,7 +100,7 @@ else
 	if (  !is_file($Cache)
 	   OR (filemtime($Cache) < $data['lastupdate'])
 	   OR !filesize($Cache)
-	   OR $username == "gugusse")
+	   )
 	{
 
 		$duration =  $_SERVER['REQUEST_TIME'] - $statsstart;
@@ -220,9 +228,29 @@ else
 	{
 		touch_badge($username, $type, $style, $color);
 		header("Content-Type: image/png");
-		//echo $Cache;
 		echo file_get_contents($Cache);
 	}
+}
+
+function GetGMT($time)
+{
+	return gmdate("D, d M Y H:i:s", $time) . " GMT";
+}
+
+function SendCacheHeaders($lastmodified, $maxage, $limit="public")
+{
+	$LastModified = GetGMT($lastmodified);
+	if ("$_SERVER[HTTP_IF_MODIFIED_SINCE]" == "$LastModified")
+	{
+		header("HTTP/1.1 304 Not Modified");
+		exit;
+	}
+
+	/* Give a fresh copy */
+	$Expires = GetGMT($lastmodified + $maxage);
+	header("Cache-Control: max-age=$maxage, $limit");
+	header("Last-Modified: $LastModified");
+	header("Expires: $Expires");
 }
 
 
