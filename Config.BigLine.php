@@ -9,7 +9,7 @@ putenv("GDFONTPATH=fonts");
 
 define(CACHE_FOLDER, "cache");
 
-include("Config.mysql");
+include("Config.mysql.php");
 
 $Styles = array (
 			"Astonished" => "Astonish",
