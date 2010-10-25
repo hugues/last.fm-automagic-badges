@@ -54,7 +54,8 @@ $res = mysql_query("SELECT * FROM users WHERE username='" . gpc_addslashes(strto
 $data = mysql_fetch_assoc($res);
 
 if(($username AND !mysql_num_rows($res))
-OR ($data['lastchecked'] AND $data["lastchecked"]+CACHE < time()))
+// Check once every hour.
+OR ($data['lastchecked'] AND $data["lastchecked"]+3600 < time()))
   make_db_cache($username);
 
 /*output image cache*/
