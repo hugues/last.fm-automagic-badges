@@ -74,7 +74,7 @@ if (is_file($Cache))
 }
 
 /*-----------------------------------------------------------
-  		Ok, now we are ready to create the image with GD.
+		Ok, now we are ready to create the image with GD.
 */
 
 $playcount = $data['playcount'];
@@ -247,7 +247,7 @@ function SendCacheHeaders($lastmodified, $maxage, $limit="public")
 	}
 
 	/* Give a fresh copy */
-	$Expires = GetGMT($lastmodified + $maxage);
+	$Expires = GetGMT($_SERVER[REQUEST_TIME] + $maxage);
 	header("Cache-Control: max-age=$maxage, $limit");
 	header("Last-Modified: $LastModified");
 	header("Expires: $Expires");
