@@ -13,6 +13,7 @@ CREATE TABLE `users` (
 	`statsstart` bigint(11) NOT NULL,
 	`playcount` int(10) unsigned NOT NULL,
 	`lastupdate` bigint(11) unsigned NOT NULL,
+	`lastchecked` bigint(11) unsigned NOT NULL,
 	PRIMARY KEY  (`username`)
 ) ;
 
@@ -53,7 +54,7 @@ $res = mysql_query("SELECT * FROM users WHERE username='" . gpc_addslashes(strto
 $data = mysql_fetch_assoc($res);
 
 if(($username AND !mysql_num_rows($res))
-OR ($data["lastupdate"] AND $data["lastupdate"]+CACHE < time()))
+OR ($data['lastchecked'] AND $data["lastchecked"]+CACHE < time()))
   make_db_cache($username);
 
 /*output image cache*/
@@ -61,29 +62,20 @@ $Cache=CACHE_FOLDER."/Pictures/".strtolower(rawurlencode($username))."_$type-$st
 
 //clearstatcache();
 
-/*
-if (is_file($Cache) AND (filemtime($Cache) >= $data['lastupdate'])){
-  header("Location: /~hugues/Last.fm/".$Cache); //its faster, but you should set CACHE_FOLDER = "."
-  exit;
-}
-*/
-
 if (is_file($Cache))
 {
 	SendCacheHeaders($data["lastupdate"], CACHE);
 }
 
 /*-----------------------------------------------------------
+	Expired.
 		Ok, now we are ready to create the image with GD.
 */
-
-$playcount = $data['playcount'];
-$statsstart = $data['statsstart'];
 
 $Lines = array();
 $Lines[] = new Text;
 
-if (! $playcount)
+if (! $data["playcount"])
 {
 	$Lines[0]->value="Sorry, $username is not";
 	$Lines[0]->angle=rand(-1,2);
@@ -94,6 +86,9 @@ if (! $playcount)
 }
 else
 {
+	$playcount = $data['playcount'];
+	$statsstart = $data['statsstart'];
+
 	$res = mysql_query("SELECT * FROM badges WHERE username='" . gpc_addslashes(strtolower($username)) . "' AND type='$type' AND style='$style' AND color='$color';");
 	$badge = mysql_fetch_assoc($res);
 
@@ -232,6 +227,10 @@ else
 	}
 }
 
+//------------ END -----------------------------------------------//
+
+
+
 function GetGMT($time)
 {
 	return gmdate("D, d M Y H:i:s", $time) . " GMT";
@@ -281,7 +280,7 @@ function make_db_cache($username){
   
   			case "registered":
   			case "statsreset":
-  				$value = feed->getAttribute("unixtime");
+  				$value = $feed->getAttribute("unixtime");
 				if ($data['statsstart'] != $value)
 				{
 					$data['statsstart']=$value;
@@ -292,7 +291,7 @@ function make_db_cache($username){
   				break;
   
   			case "profile":
-  				$value=feed->getAttribute("username");
+  				$value = $feed->getAttribute("username");
 				if ($data['username'] != $value)
 				{
 					$data['username']=$value;
@@ -304,8 +303,12 @@ function make_db_cache($username){
 
 	if ($data['playcount'] != 0)
 	{
-		$QUERY=(sprintf("REPLACE INTO users (lastupdate,playcount,statsstart,username) VALUES ('%s',%s,'%s','%s');",
-		  ($modified ? time() : $data['lastupdate']), $data['playcount'], gpc_addslashes($data['statsstart']), gpc_addslashes(strtolower($username))));
+		$data['lastchecked']=time();
+		if ($modified)
+			$data['lastupdate']=$data['lastchecked'];
+
+		$QUERY=(sprintf("REPLACE INTO users (lastupdate,lastchecked,playcount,statsstart,username) VALUES ('%s',%s,'%s','%s');",
+		  $data['lastupdate'], $data['lastchecked'], $data['playcount'], gpc_addslashes($data['statsstart']), gpc_addslashes(strtolower($username))));
 		mysql_query($QUERY);
 	}
   }
