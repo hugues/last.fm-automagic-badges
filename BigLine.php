@@ -3,7 +3,7 @@
   *
 		Licensed under WTFPL - DoWhatTheFuckYouWant Public License
 		(c) Hugues Hiegel 2006-2008 <hugues@hiegel.fr>
-		
+
 		Thanks to Pavel Zbytovský - www.zby.cz
 			for saving me time with the MySQL stuff !
 
@@ -28,7 +28,7 @@ CREATE TABLE `badges` (
 	`png` longblob,
 	PRIMARY KEY  (`username`,`type`)
 );
-  
+
   *
   */
 
@@ -257,49 +257,50 @@ function SendCacheHeaders($lastmodified, $maxage, $limit="public")
 function make_db_cache($username){
   global $data;
   $profile_xml = file_get_contents("http://ws.audioscrobbler.com/1.0/user/".rawurlencode($username)."/profile.xml");
-  
+
   $feed=new XMLReader();
   if($feed->xml($profile_xml)){
 
-  	$modified = FALSE;
+	$modified = FALSE;
 
-  	while ($feed->read())
-  	{
-  		switch ($feed->name)
-  		{
-  			case "playcount":
-  				$feed->read();
+	while ($feed->read())
+	{
+		switch ($feed->name)
+		{
+			case "playcount":
+				$feed->read();
 				$value = intval($feed->value);
 				if ($data['playcount'] != $value)
 				{
 					$data['playcount']=$value;
 					$modified=TRUE;
 				}
-  				$feed->read();
-  				break;
-  
-  			case "registered":
-  			case "statsreset":
-  				$value = $feed->getAttribute("unixtime");
+				$feed->read();
+				break;
+
+			case "registered":
+			case "statsreset":
+				$value = $feed->getAttribute("unixtime");
 				if ($data['statsstart'] != $value)
 				{
 					$data['statsstart']=$value;
 					$modified = TRUE;
 				}
-  				$feed->read();
-  				$feed->read();
-  				break;
-  
-  			case "profile":
-  				$value = $feed->getAttribute("username");
+				$feed->read();
+				$feed->read();
+				break;
+
+			case "profile":
+				$value = $feed->getAttribute("username");
 				if ($data['username'] != $value)
 				{
 					$data['username']=$value;
 					$modified = TRUE;
 				}
-  				break;
-  		}
-  	}
+				break;
+		}
+	}
+
 
 	if ($data['playcount'] != 0)
 	{
