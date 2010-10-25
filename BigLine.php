@@ -70,7 +70,7 @@ if (is_file($Cache) AND (filemtime($Cache) >= $data['lastupdate'])){
 
 if (is_file($Cache))
 {
-	SendCacheHeaders(filemtime($Cache), CACHE);
+	SendCacheHeaders($data["lastupdate"], CACHE);
 }
 
 /*-----------------------------------------------------------
@@ -261,33 +261,51 @@ function make_db_cache($username){
   
   $feed=new XMLReader();
   if($feed->xml($profile_xml)){
+
+  	$modified = FALSE;
+
   	while ($feed->read())
   	{
   		switch ($feed->name)
   		{
   			case "playcount":
   				$feed->read();
-  				$data['playcount']=intval($feed->value);
+				$value = intval($feed->value);
+				if ($data['playcount'] != $value)
+				{
+					$data['playcount']=$value;
+					$modified=TRUE;
+				}
   				$feed->read();
   				break;
   
   			case "registered":
   			case "statsreset":
-  				$data['statsstart']=$feed->getAttribute("unixtime");
+  				$value = feed->getAttribute("unixtime");
+				if ($data['statsstart'] != $value)
+				{
+					$data['statsstart']=$value;
+					$modified = TRUE;
+				}
   				$feed->read();
   				$feed->read();
   				break;
   
   			case "profile":
-  				$data['username']=$feed->getAttribute("username");
+  				$value=feed->getAttribute("username");
+				if ($data['username'] != $value)
+				{
+					$data['username']=$value;
+					$modified = TRUE;
+				}
   				break;
   		}
   	}
-  	
+
 	if ($data['playcount'] != 0)
 	{
 		$QUERY=(sprintf("REPLACE INTO users (lastupdate,playcount,statsstart,username) VALUES ('%s',%s,'%s','%s');",
-		  time(), $data['playcount'], gpc_addslashes($data['statsstart']), gpc_addslashes(strtolower($username))));
+		  ($modified ? time() : $data['lastupdate']), $data['playcount'], gpc_addslashes($data['statsstart']), gpc_addslashes(strtolower($username))));
 		mysql_query($QUERY);
 	}
   }
