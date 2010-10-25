@@ -307,7 +307,7 @@ function make_db_cache($username){
 		if ($modified)
 			$data['lastupdate']=$data['lastchecked'];
 
-		$QUERY=(sprintf("REPLACE INTO users (lastupdate,lastchecked,playcount,statsstart,username) VALUES ('%s',%s,'%s','%s');",
+		$QUERY=(sprintf("REPLACE INTO users (lastupdate,lastchecked,playcount,statsstart,username) VALUES ('%s',%s,'%s','%s','%s');",
 		  $data['lastupdate'], $data['lastchecked'], $data['playcount'], gpc_addslashes($data['statsstart']), gpc_addslashes(strtolower($username))));
 		mysql_query($QUERY);
 	}
