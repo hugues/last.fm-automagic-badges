@@ -224,7 +224,7 @@ else
 	{
 		touch_badge($username, $type, $style, $color);
 		header("Content-Type: image/png");
-		echo file_get_contents($Cache);
+		echo @file_get_contents($Cache);
 	}
 }
 
@@ -257,10 +257,10 @@ function SendCacheHeaders($lastmodified, $maxage, $limit="public")
 
 function make_db_cache($username){
   global $data;
-  $profile_xml = file_get_contents("http://ws.audioscrobbler.com/1.0/user/".rawurlencode($username)."/profile.xml");
+  $profile_xml = @file_get_contents("http://ws.audioscrobbler.com/1.0/user/".rawurlencode($username)."/profile.xml");
 
   $feed=new XMLReader();
-  if($feed->xml($profile_xml)){
+  if($profile_xml && $feed->xml($profile_xml)){
 
 	$modified = FALSE;
 
