@@ -1,13 +1,13 @@
 <?
 
-define(TRUENESS, 4000);
-define(CACHE,    (3600*48));
-define(WIDTH,     200);
-define(HEIGHT,     50);
+define("TRUENESS", 4000);
+define("CACHE",    (3600*48));
+define("WIDTH",     200);
+define("HEIGHT",     50);
 #putenv("GDFONTPATH=/usr/share/fonts/truetype");
 putenv("GDFONTPATH=fonts");
 
-define(CACHE_FOLDER, "cache");
+define("CACHE_FOLDER", "cache");
 
 include("Config.mysql.php");
 
@@ -74,7 +74,7 @@ $Types = array(
 				);
 
 // DEFAULT VALUES //
-if ($user == "")                        $user="gugusse";
+if (!isset($user) || $user == "")        $user="gugusse";
 if (!array_key_exists($style, $Styles)) $style="Astonished";
 if (!array_key_exists($color, $Colors)) $color="Black";
 //if (!array_key_exists($type,  $Types))  { $type="UNAVAILABLE" ; $color="Black" ; $username="gugusse" ; }

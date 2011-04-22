@@ -107,7 +107,7 @@ else
 		$TracksPerDay = floor($playcount / $days);
 		$TracksPerWeek = floor($playcount / $weeks);
 		$TracksPerMonth = floor($playcount / $months);
-		define(TRACKS_PER_ALBUM, 13);
+		define("TRACKS_PER_ALBUM", 13);
 		$AlbumsPerDay = floor($TracksPerDay / TRACKS_PER_ALBUM);
 		$AlbumsPerWeek = floor($TracksPerWeek / TRACKS_PER_ALBUM);
 		$AlbumsPerMonth = floor($TracksPerMonth / TRACKS_PER_ALBUM);
@@ -163,7 +163,7 @@ else
 				break;
 		}
 
-		define(ANGLE,2);
+		define("ANGLE",2);
 		$y=0;
 
 		$username=ucfirst($username);
@@ -240,14 +240,15 @@ function GetGMT($time)
 function SendCacheHeaders($lastmodified, $maxage, $limit="public")
 {
 	$LastModified = GetGMT($lastmodified);
-	if ("$_SERVER[HTTP_IF_MODIFIED_SINCE]" == "$LastModified")
+	if (array_key_exists("HTTP_IF_MODIFIED_SINCE", $_SERVER) &&
+	    $_SERVER['HTTP_IF_MODIFIED_SINCE'] == "$LastModified")
 	{
 		header("HTTP/1.1 304 Not Modified");
 		exit;
 	}
 
 	/* Give a fresh copy */
-	$Expires = GetGMT($_SERVER[REQUEST_TIME] + $maxage);
+	$Expires = GetGMT($_SERVER['REQUEST_TIME'] + $maxage);
 	header("Cache-Control: max-age=$maxage, $limit");
 	header("Last-Modified: $LastModified");
 	header("Expires: $Expires");
