@@ -1,10 +1,16 @@
 Options -Indexes
 
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/BigLine/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ /index/$1 [L]
+
+
 # Permanently removed
-Redirect Gone /~hugues/Last.fm/Badges
-Redirect Gone /~hugues/Last.fm/Badges_v2
+Redirect Gone /Badges
+Redirect Gone /Badges_v2
 
 # And failback out-of-order picture
-ErrorDocument 410 /~hugues/Last.fm/out-of-order.png
-ErrorDocument 404 /~hugues/Last.fm/out-of-order.png
+ErrorDocument 410 /out-of-order.png
+ErrorDocument 404 /out-of-order.png
 
