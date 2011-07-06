@@ -106,6 +106,7 @@ var step = 1024;
 
 function total_users_counter()
 {
+	document.getElementById("Go").style.visibility="hidden";
 	document.getElementById("counter").innerHTML = users_count;
 
 	while (total_users < users_count + step)
