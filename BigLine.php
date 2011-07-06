@@ -322,8 +322,8 @@ function touch_badge($username, $type, $style, $color)
 	$res = mysql_query("SELECT hits FROM badges WHERE username='" . gpc_addslashes(strtolower($username)) . "' AND type='$type' AND style='$style' AND color='$color';");
 	$data = mysql_fetch_assoc($res);
 
-	if(mysql_num_rows($res))
-		$hits = $data["hits"];
+	//if(mysql_num_rows($res))
+	$hits = @$data["hits"];
 	$hits++;
 
 	$QUERY=sprintf("UPDATE badges SET hits=%s, lasthit='%s' WHERE username='%s' AND type='$type' AND style='$style' AND color='$color';", 

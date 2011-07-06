@@ -161,21 +161,21 @@ function change()
 <?
 }
 
-$user  = $_POST['user'];
-$type  = $_POST['type'];
-$style = $_POST['style'];
-$color = $_POST['color'];
+$user  = @$_POST['user'];
+$type  = @$_POST['type'];
+$style = @$_POST['style'];
+$color = @$_POST['color'];
 
 $pathinfo = explode("/", $_SERVER['PATH_INFO']);
 
-if ($user  == "") $user  = $pathinfo[1];
-if ($type  == "") $type  = $pathinfo[2]; if ($type  == "") $type  = "TracksPerDay";
-if ($style == "") $style = $pathinfo[3];
-if ($color == "") $color = $pathinfo[4];
+if ($type  == "") $type  = @$pathinfo[1]; if ($type  == "") $type  = "TracksPerDay";
+if ($style == "") $style = @$pathinfo[2];
+if ($color == "") $color = @$pathinfo[3];
+if ($user  == "") $user  = @$pathinfo[4];
 
 include("Config.BigLine.php");
 
-$PATH="<span name=\"_user\">".$user."</span>/<span name=\"_type\">".$type."</span>/<span name=\"_style\">$style</span>/<span name=\"_color\">".$color."</span>/";
+$PATH="<span name=\"_type\">".$type."</span>/<span name=\"_style\">$style</span>/<span name=\"_color\">".$color."</span>/<span name=\"_user\">".$user."</span>";
 $URL=preg_replace('/<[^>]*>/', '', $PATH);
 
 ?>
@@ -216,7 +216,7 @@ foreach ($Colors as $Color => $ColorCode)
 <td><input type="submit" value="Go!" /></td></tr>
 <tr>
 <td colspan=2 class="center">
-<img id="preview" src="/BigLine/<? echo $URL ;?>" alt="<? echo str_replace("_", $user, $Comment); ?>" />
+<img id="preview" src="/<? echo $URL ;?>.png" alt="<? echo str_replace("_", $user, $Comment); ?>" />
 </td>
 </table>
 </form>
@@ -224,7 +224,7 @@ foreach ($Colors as $Color => $ColorCode)
 <? if ($type != "UNAVAILABLE") { ?>
 <div class="code">
 	[url=http://lastfm.hiegel.fr/<? echo $PATH; ?>]<br />
-	[img]http://lastfm.hiegel.fr/BigLine/<? echo $PATH; ?>[/img]<br />
+	[img]http://lastfm.hiegel.fr/<? echo $PATH; ?>.png[/img]<br />
 	[/url]
 </div>
 <? } ?>
