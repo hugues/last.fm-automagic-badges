@@ -9,6 +9,7 @@ CREATE TEMPORARY TABLE duplicates (SELECT username, type, COUNT(username) AS cou
 DELETE badges.*
 	FROM badges, duplicates
 	WHERE badges.username = duplicates.username
+	AND badges.hits = 1
 	AND ( (badges.type = duplicates.type AND duplicates.count > 1)
 	   OR ( (badges.type LIKE concat(duplicates.type,"%") OR duplicates.type LIKE concat(badges.type,"%"))
 		 AND badges.type != duplicates.type )
