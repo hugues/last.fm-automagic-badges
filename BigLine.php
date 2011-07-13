@@ -25,7 +25,7 @@ CREATE TABLE `badges` (
 	`lastupdate` bigint(11) default NULL,
 	`hits` bigint(20) unsigned NOT NULL,
 	`lasthit` bigint(11) unsigned default NULL,
-	`png` longblob,
+	`png` varchar(100) NOT NULL,
 	PRIMARY KEY  (`username`,`type`)
 );
 
@@ -78,12 +78,8 @@ $Lines[] = new Text;
 
 if (! $data["playcount"])
 {
-	$Lines[0]->value="Sorry, $username is not";
-	$Lines[0]->angle=rand(-1,2);
-	$Lines[] = new Text;
-	$Lines[1]->value="a valid Last.fm account";
-	$Lines[1]->angle=rand(-2,1);
-	$Cache="";
+	header('Location: /out-of-order.png');
+	exit();
 }
 else
 {
@@ -115,8 +111,7 @@ else
 		$formats = array("DEFAULT"	=> "\$number \$albumtrack per \$dayweekmonth",
 						 "Total"	=> "\$number \$albumtrack played",
 						 "Trueness"	=> "\$username is \$trueness listener",
-						 "Since"	=> "Since \$since",
-						 "FAILBACK"	=> "Sorry, '\$type' is unavailable.");
+						 "Since"	=> "Since \$since");
 
 		switch($type)
 		{
@@ -159,7 +154,8 @@ else
 				}
 				break;
 			default:
-				$format="FAILBACK";
+				header('Location: /out-of-order.png');
+				exit();
 				break;
 		}
 
