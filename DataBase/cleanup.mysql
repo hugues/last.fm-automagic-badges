@@ -1,14 +1,26 @@
 USE lastfm
 
-CREATE TEMPORARY TABLE users_having_a_badge (SELECT username, 0 AS has_a_badge FROM users) ;
-CREATE TEMPORARY TABLE badges_having_a_user (SELECT username, 0 AS has_a_user FROM badges) ;
+/**
+ * Deletes all entries in badges
+ * for each unique username + type
+ * where more than one style or color exists
+ */
+CREATE TEMPORARY TABLE duplicates (SELECT username, type, COUNT(username) AS count FROM badges GROUP BY username, type ) ;
+DELETE badges.*
+	FROM badges, duplicates
+	WHERE badges.username = duplicates.username
+	AND ( (badges.type = duplicates.type AND duplicates.count > 1)
+	   OR ( (badges.type LIKE concat(duplicates.type,"%") OR duplicates.type LIKE concat(badges.type,"%"))
+		 AND badges.type != duplicates.type )
+	   ) ;
 
-UPDATE users_having_a_badge, badges SET has_a_badge = 1 WHERE users_having_a_badge.username = badges.username ;
-UPDATE badges_having_a_user, users SET has_a_user = 1 WHERE badges_having_a_user.username = users.username ;
+/**
+ * Delete orphaned users and orphaned badges
+ */
+CREATE TEMPORARY TABLE users_without_badge (SELECT users.username FROM users LEFT JOIN badges ON users.username = badges.username WHERE badges.username IS NULL) ;
+CREATE TEMPORARY TABLE badges_without_user (SELECT badges.username FROM badges LEFT JOIN users ON badges.username = users.username WHERE users.username IS NULL) ;
 
-DELETE users.* FROM users, users_having_a_badge where has_a_badge = 0 AND users.username = users_having_a_badge.username ;
-SELECT badges.png FROM badges, badges_having_a_user where has_a_user = 0 AND badges.username = badges_having_a_user.username ;
-DELETE badges.* FROM badges, badges_having_a_user where has_a_user = 0 AND badges.username = badges_having_a_user.username ;
+DELETE users.* FROM users, users_without_badge where users.username = users_without_badge.username ;
+DELETE badges.* FROM badges, badges_without_user where badges.username = badges_without_user.username ;
 
-DROP TABLE users_having_a_badge;
-DROP TABLE badges_having_a_user;
+
