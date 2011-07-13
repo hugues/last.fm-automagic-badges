@@ -7,7 +7,7 @@ define("HEIGHT",     50);
 #putenv("GDFONTPATH=/usr/share/fonts/truetype");
 putenv("GDFONTPATH=fonts");
 
-define("CACHE_FOLDER", "cache");
+define("CACHE_FOLDER", "/var/cache/www/Lastfm");
 
 include("Config.mysql.php");
 
