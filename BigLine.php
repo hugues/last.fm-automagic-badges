@@ -59,7 +59,8 @@ OR ($data['lastchecked'] AND $data["lastchecked"]+3600 < time()))
   make_db_cache($username);
 
 /*output image cache*/
-$Cache=CACHE_FOLDER."/Pictures/".strtolower(rawurlencode($username))."_$type-$style-$color.png";
+$user=strtolower(rawurlencode($username))
+$Cache=CACHE_FOLDER."/Pictures/".substr($user, 0, 2)."/".$user."_$type-$style-$color.png";
 
 //clearstatcache();
 
